@@ -5,7 +5,7 @@ from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
-from Sam'scase_env import HospitalEnv
+from Samcase_env import HospitalEnv
 
 # Build the model
 model = Sequential([
