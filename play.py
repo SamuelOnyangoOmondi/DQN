@@ -20,11 +20,13 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 dqn.load_weights('dqn_weights.h5f')
 
 # Play the game
-observation = env.reset()
+observation, _ = env.reset()
+observation = np.array([observation])  # Add batch dimension for model compatibility
 done = False
 while not done:
     action = dqn.forward(observation)
     observation, reward, done, info = env.step(action)
+    observation = np.array([observation])  # Reformat for next prediction
     env.render()
 
 env.close()
