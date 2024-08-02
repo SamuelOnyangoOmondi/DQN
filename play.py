@@ -3,6 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
 from rl.agents.dqn import DQNAgent
 from rl.memory import SequentialMemory
+from tensorflow.keras.optimizers import Adam
 
 # Load the model and environment
 env = HospitalEnv()
