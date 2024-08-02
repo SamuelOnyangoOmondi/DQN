@@ -1,4 +1,4 @@
-from Sam'scase_env import HospitalEnv
+from Samcase_env import HospitalEnv
 
 env = HospitalEnv()
 env.reset()
