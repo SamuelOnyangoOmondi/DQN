@@ -8,8 +8,7 @@ class HospitalEnv(gym.Env):
     def __init__(self, size=5, render_mode=None):
         super(HospitalEnv, self).__init__()
         self.size = size
-        self.action_space = spaces.Discrete(4)  # up, down, left, right
-        # Using a Box instead of Dict for direct neural network compatibility
+        self.action_space = spaces.Discrete(4)  # Up, down, left, right
         self.observation_space = spaces.Box(low=0, high=size - 1, shape=(2,), dtype=np.int32)
         self.state = np.array([0, 0], dtype=np.int32)  # Starting position at top-left corner
         self.goal = np.array([size - 1, size - 1], dtype=np.int32)  # Goal at bottom-right corner
