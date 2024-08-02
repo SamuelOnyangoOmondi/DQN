@@ -9,6 +9,7 @@ from Samcase_env import HospitalEnv
 
 # Setup the environment
 env = HospitalEnv()
+print("Observation space shape:", env.observation_space.shape)  # Debugging print
 
 # Build the model
 model = Sequential([
@@ -27,6 +28,10 @@ dqn = DQNAgent(model=model, nb_actions=env.action_space.n, memory=memory, nb_ste
 dqn.compile(Adam(learning_rate=1e-3), metrics=['mae'])
 
 # Train the agent
+observation, _ = env.reset()
+observation = np.array([observation])  # Ensure proper shape
+print("Training observation shape:", observation.shape)  # Debugging print
+
 dqn.fit(env, nb_steps=5000, visualize=False, verbose=2)
 
 # Save weights
