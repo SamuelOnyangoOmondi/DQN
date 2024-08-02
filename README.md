@@ -20,8 +20,8 @@ Follow these steps to set up the project environment and run the DQN model:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourgithubusername/yourrepositoryname.git
-   cd yourrepositoryname
+   git clone (https://github.com/SamuelOnyangoOmondi/DQN.git)
+   cd DQN
    ```
 
 2. **Set Up a Virtual Environment** (Optional but recommended):
