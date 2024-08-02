@@ -7,6 +7,9 @@ from rl.memory import SequentialMemory
 
 from Samcase_env import HospitalEnv
 
+# Setup the environment
+env = HospitalEnv()
+
 # Build the model
 model = Sequential([
     Flatten(input_shape=(1,) + env.observation_space.shape),
@@ -15,9 +18,6 @@ model = Sequential([
     Dense(16, activation='relu'),
     Dense(env.action_space.n, activation='linear')
 ])
-
-# Setup the environment
-env = HospitalEnv()
 
 # Configure and compile the agent
 memory = SequentialMemory(limit=50000, window_length=1)
