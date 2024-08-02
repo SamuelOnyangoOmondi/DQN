@@ -1,4 +1,4 @@
-from Sam'scase_env import HospitalEnv
+from Samcase_env import HospitalEnv
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
 from rl.agents.dqn import DQNAgent
