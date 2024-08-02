@@ -1,5 +1,3 @@
-Creating a well-structured `README.md` file for your project is crucial for explaining what the project does, how to set it up, and how to use it. Below is a template you can use for your assignment involving a deep Q-network (DQN) for reinforcement learning, as implemented in your `train.py`, `Samcase_env.py`, and other related files.
-
 ---
 
 # Deep Q-Network (DQN) for Hospital Environment Navigation
