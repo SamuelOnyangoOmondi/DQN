@@ -3,9 +3,9 @@ from Samcase_env import HospitalEnv
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras.optimizers import Adam
-from rl.agents.dqn import DQNAgent
-from rl.memory import SequentialMemory
-from rl.policy import EpsGreedyQPolicy
+from rl2.agents.dqn import DQNAgent
+from rl2.policy import BoltzmannQPolicy
+from rl2.memory import SequentialMemory
 
 # Initialize environment
 env = HospitalEnv()
