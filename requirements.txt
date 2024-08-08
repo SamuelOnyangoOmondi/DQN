@@ -10,7 +10,7 @@ google-auth==2.32.0
 google-auth-oauthlib==1.2.1
 google-pasta==0.2.0
 grpcio==1.65.4
-gym==0.21
+gym==0.21.0
 gym-notices==0.0.8
 gymnasium==0.26.1
 h5py==3.11.0
