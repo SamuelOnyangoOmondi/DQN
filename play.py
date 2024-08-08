@@ -1,28 +1,24 @@
-from tensorflow.keras.models import Sequential
-from rl.agents.dqn import DQNAgent
+import gym
+from stable_baselines3 import PPO
 from plastech_env import PlasTechEnv
-from train import build_model, build_agent
+
+def simulate():
+    # Load the environment
+    env = PlasTechEnv()
+    
+    # Load the trained model
+    model = PPO.load("ppo_plastech")
+
+    # Run a simulation
+    obs = env.reset()
+    for _ in range(1000):
+        action, _states = model.predict(obs, deterministic=True)
+        obs, rewards, dones, info = env.step(action)
+        env.render()
+        if dones:
+            break
+
+    env.close()
 
 if __name__ == "__main__":
-    # Initialize the environment
-    env = PlasTechEnv()
-    np.random.seed(123)
-    env.seed(123)
-
-    # Rebuild the model and agent for playing
-    num_actions = env.action_space.n
-    model = build_model((env.observation_space.shape[0],), num_actions)
-    dqn = build_agent(model, num_actions)
-
-    # Load the trained weights
-    dqn.load_weights('dqn_plastech_weights.h5f')
-
-    # Run a single episode to see the agent in action
-    obs = env.reset()
-    done = False
-    while not done:
-        action = dqn.forward(obs)
-        obs, reward, done, info = env.step(action)
-        env.render(mode='console')  # or 'human' if more sophisticated rendering is implemented
-
-    print("Simulation complete.")
+    simulate()
