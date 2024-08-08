@@ -27,8 +27,8 @@ To set up and run the DQN model, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/YourGitHubUsername/Plas-tech.git
-   cd Plas-tech
+   git clone https://github.com/SamuelOnyangoOmondi/DQN.git
+   cd DQN
    ```
 
 2. **Set Up a Virtual Environment** (Optional but recommended):
