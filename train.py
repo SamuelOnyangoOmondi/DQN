@@ -1,34 +1,56 @@
 import numpy as np
+import gym
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras.optimizers import Adam
-from rl.agents.dqn import DQNAgent  # If using keras-rl
-# from rl2.agents.dqn import DQNAgent  # If rl2 was a typo and the correct one is rl
+from plastech_env import PlasTechEnv
+from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
-from Samcase_env import HospitalEnv
 
-# Setup the environment
-env = HospitalEnv()
-nb_actions = env.action_space.n
+def build_model(state_shape, num_actions):
+    """
+    Build a neural network model that predicts the Q-values for each action in a given state.
+    """
+    model = Sequential([
+        Flatten(input_shape=(1,) + state_shape),
+        Dense(24, activation='relu'),
+        Dense(24, activation='relu'),
+        Dense(num_actions, activation='linear')
+    ])
+    return model
 
-# Build the model
-model = Sequential([
-    Flatten(input_shape=(1,) + env.observation_space.shape),
-    Dense(24, activation='relu'),
-    Dense(24, activation='relu'),
-    Dense(nb_actions, activation='linear')
-])
+def build_agent(model, num_actions):
+    """
+    Compile the DQN agent with the given model and action space.
+    """
+    policy = BoltzmannQPolicy()
+    memory = SequentialMemory(limit=50000, window_length=1)
+    dqn = DQNAgent(model=model, memory=memory, policy=policy,
+                  nb_actions=num_actions, nb_steps_warmup=10, target_model_update=1e-2)
+    return dqn
 
-# Configure and compile the agent
-memory = SequentialMemory(limit=50000, window_length=1)
-policy = BoltzmannQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10,
-               target_model_update=1e-2, policy=policy)
-dqn.compile(Adam(learning_rate=1e-3), metrics=['mae'])
+if __name__ == "__main__":
+    # Initialize the environment
+    env = PlasTechEnv()
+    np.random.seed(123)
+    env.seed(123)
 
-# Train the agent
-dqn.fit(env, nb_steps=5000, visualize=False, verbose=2)
+    # Get the number of actions from the environment's action space
+    num_actions = env.action_space.n
+    # Build the model
+    model = build_model((env.observation_space.shape[0],), num_actions)
+    print(model.summary())
 
-# Save weights
-dqn.save_weights('dqn_hospital_weights.h5f', overwrite=True)
+    # Build and compile the agent
+    dqn = build_agent(model, num_actions)
+    dqn.compile(Adam(lr=1e-3), metrics=['mae'])
+
+    # Start training the agent
+    dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
+
+    # After training is complete, save the model weights
+    dqn.save_weights('dqn_plastech_weights.h5f', overwrite=True)
+
+    # Optionally, load the weights and continue training or start testing
+    # dqn.load_weights('dqn_plastech_weights.h5f')
