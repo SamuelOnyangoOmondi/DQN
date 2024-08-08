@@ -1,4 +1,7 @@
 import os
+# Set the environment variable to disable oneDNN optimizations before importing TensorFlow
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 import gym
 import numpy as np
 from stable_baselines3 import DQN
