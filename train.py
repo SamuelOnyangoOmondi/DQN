@@ -1,56 +1,29 @@
-import numpy as np
+import os
 import gym
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
-from tensorflow.keras.optimizers import Adam
-from plastech_env import PlasTechEnv
-from rl.agents.dqn import DQNAgent
-from rl.policy import BoltzmannQPolicy
-from rl.memory import SequentialMemory
+from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
+from plastech_env import PlasTechEnv  # Import the custom environment we created
 
-def build_model(state_shape, num_actions):
-    """
-    Build a neural network model that predicts the Q-values for each action in a given state.
-    """
-    model = Sequential([
-        Flatten(input_shape=(1,) + state_shape),
-        Dense(24, activation='relu'),
-        Dense(24, activation='relu'),
-        Dense(num_actions, activation='linear')
-    ])
+def train_agent():
+    # Create the environment
+    env = PlasTechEnv()
+    env = DummyVecEnv([lambda: env])  # Vectorized environments for stability-baselines3
+
+    # Define the model
+    model = PPO("MlpPolicy", env, verbose=1)
+
+    # Train the model
+    model.learn(total_timesteps=20000)
+
+    # Save the model
+    model.save("ppo_plastech")
+
+    # Evaluate the model
+    mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
+    print(f"Evaluation: mean_reward = {mean_reward:.2f} +/- {std_reward:.2f}")
+
     return model
 
-def build_agent(model, num_actions):
-    """
-    Compile the DQN agent with the given model and action space.
-    """
-    policy = BoltzmannQPolicy()
-    memory = SequentialMemory(limit=50000, window_length=1)
-    dqn = DQNAgent(model=model, memory=memory, policy=policy,
-                  nb_actions=num_actions, nb_steps_warmup=10, target_model_update=1e-2)
-    return dqn
-
 if __name__ == "__main__":
-    # Initialize the environment
-    env = PlasTechEnv()
-    np.random.seed(123)
-    env.seed(123)
-
-    # Get the number of actions from the environment's action space
-    num_actions = env.action_space.n
-    # Build the model
-    model = build_model((env.observation_space.shape[0],), num_actions)
-    print(model.summary())
-
-    # Build and compile the agent
-    dqn = build_agent(model, num_actions)
-    dqn.compile(Adam(lr=1e-3), metrics=['mae'])
-
-    # Start training the agent
-    dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-
-    # After training is complete, save the model weights
-    dqn.save_weights('dqn_plastech_weights.h5f', overwrite=True)
-
-    # Optionally, load the weights and continue training or start testing
-    # dqn.load_weights('dqn_plastech_weights.h5f')
+    trained_model = train_agent()
