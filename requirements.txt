@@ -12,6 +12,7 @@ google-pasta==0.2.0
 grpcio==1.65.4
 gym==0.26.2
 gym-notices==0.0.8
+gymnasium==0.26.0
 h5py==3.11.0
 idna==3.7
 keras==2.15.0
@@ -23,7 +24,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 ml-dtypes==0.2.0
 namex==0.0.8
-numpy==1.26.4
+numpy==1.21.2
 # nvidia-cublas-cu12==12.1.3.1
 # nvidia-cuda-cupti-cu12==12.1.105
 # nvidia-cuda-nvrtc-cu12==12.1.105
@@ -50,6 +51,7 @@ requests-oauthlib==2.0.0
 rich==13.7.1
 rsa==4.9
 six==1.16.0
+stable-baselines3==1.5.0
 tensorboard==2.15.2
 tensorboard-data-server==0.7.2
 tensorflow==2.15.0
