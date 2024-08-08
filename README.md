@@ -1,27 +1,35 @@
----
+```markdown
+# Plas-tech: Deep Reinforcement Learning for Plastic Waste Management
 
-# Deep Q-Network (DQN) for Hospital Environment Navigation
-
-This project implements a Deep Q-Network (DQN), a type of deep reinforcement learning model, to navigate a simulated hospital environment. The agent learns to move from a starting point to a goal within a grid, avoiding potential obstacles and optimizing its path based on rewards.
+This repository contains a Deep Reinforcement Learning (DRL) project aimed at optimizing the collection and conversion of plastic waste into cooking gas. Utilizing a customized environment and a model based on Deep Q-Networks (DQN), this project simulates the efficient management and processing of plastic waste within a defined grid-like environment.
 
 ## Features
 
-- **Custom Environment**: Utilizes a gym-like environment tailored for simulating a hospital navigation task.
-- **DQN Implementation**: Uses a neural network to approximate Q-values with state input being the agent's position on the grid.
-- **Training and Evaluation**: Includes scripts for training the DQN agent and evaluating its performance in the environment.
+- **Custom Environment**: Uses a gym-like environment designed specifically for simulating the collection and processing of plastic waste.
+- **DQN Implementation**: Employs a neural network to approximate Q-values, with the state input being the agent’s position and status on the grid.
+- **Training and Evaluation**: Includes scripts for training the DRL agent and evaluating its performance in optimizing waste processing.
+
+## Project Structure
+
+- `plastech_env.py`: Defines the custom environment for plastic waste management.
+- `train.py`: Contains the script to train the DQN agent.
+- `play.py`: Demonstrates the trained agent in action within the simulation.
+- `test_env.py`: Provides a script for testing the environment setup.
+- `requirements.txt`: Lists all necessary Python packages for the project.
+- `models/`: Directory to store trained models.
 
 ## Environment Setup
 
-The environment, defined in `Samcase_env.py`, simulates a hospital with a grid where the agent must navigate to a specific point. The agent receives a positive reward for reaching the goal and a negative reward for taking longer paths.
+The custom environment, `plastech_env.py`, simulates a grid where an agent navigates to collect and process plastic waste efficiently. The agent receives positive rewards for successful collection and processing, and negative rewards for inefficient actions.
 
 ## Installation
 
-Follow these steps to set up the project environment and run the DQN model:
+To set up and run the DQN model, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone (https://github.com/SamuelOnyangoOmondi/DQN.git)
-   cd DQN
+   git clone https://github.com/YourGitHubUsername/Plas-tech.git
+   cd Plas-tech
    ```
 
 2. **Set Up a Virtual Environment** (Optional but recommended):
@@ -47,21 +55,14 @@ Follow these steps to set up the project environment and run the DQN model:
 ## Usage
 
 - **Training the Agent**:
-  Use the `train.py` script to train the agent. You can adjust hyperparameters within the script such as learning rate, number of episodes, etc.
+  Use the `train.py` script to train the agent with adjustable hyperparameters such as learning rate, number of episodes, etc.
 
 - **Evaluating the Agent**:
-  After training, you can evaluate the agent's performance using the `play.py` script, which demonstrates the agent navigating through the environment.
-
-## Files and Directories
-
-- `Samcase_env.py`: Defines the custom environment.
-- `train.py`: Script for training the DQN agent.
-- `play.py`: Script for demonstrating the trained agent.
-- `requirements.txt`: Contains all necessary Python packages.
+  Post training, evaluate the agent's performance using the `play.py` script to see how well it navigates through the environment to manage waste.
 
 ## Contributing
 
-Feel free to fork the repository and submit pull requests. You can also open issues for bugs or feature requests.
+Contributions are welcome! Please fork the repository and submit pull requests with any enhancements. You can also open issues for any bugs or feature suggestions.
 
 ## License
 
@@ -69,6 +70,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Contact
 
-For any queries, you can reach out to [Samuel Omondi](s.omondi@alustudent.com).
-
----
+For further information or queries, please contact [Samuel Omondi](s.omondi@alustudent.com).
+```
