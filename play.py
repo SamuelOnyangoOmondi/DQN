@@ -1,40 +1,27 @@
 from stable_baselines3 import PPO
-import matplotlib.pyplot as plt
+import os
 from plastech_env import PlasTechEnv
 
 def simulate_production():
+    model_path = "models/ppo_plastech"
+
+    if not os.path.exists(model_path + '.zip'):
+        raise FileNotFoundError(f"No model file found at {model_path}.zip. Please train the model first.")
+
     # Load the environment
     env = PlasTechEnv()
     
     # Load the trained model
-    model = PPO.load("ppo_plastech")
+    model = PPO.load(model_path)
 
-    # Prepare for rendering
-    images = []
     obs = env.reset()
-
-    for _ in range(200):  # simulate for 200 steps
+    for _ in range(200):
         action, _states = model.predict(obs, deterministic=True)
         obs, rewards, dones, info = env.step(action)
-        img = env.render(mode='rgb_array')
-        images.append(img)
         if dones:
             obs = env.reset()
 
     env.close()
-    return images
-
-def display_frames_as_gif(frames):
-    plt.figure(figsize=(frames[0].shape[1] / 72.0, frames[0].shape[0] / 72.0), dpi=72)
-    patch = plt.imshow(frames[0])
-    plt.axis('off')
-
-    def animate(i):
-        patch.set_data(frames[i])
-
-    ani = matplotlib.animation.FuncAnimation(plt.gcf(), animate, frames=len(frames), interval=50)
-    plt.show()
 
 if __name__ == "__main__":
-    frames = simulate_production()
-    display_frames_as_gif(frames)
+    simulate_production()
