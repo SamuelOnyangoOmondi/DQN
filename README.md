@@ -1,4 +1,3 @@
-```markdown
 # Plas-tech: Deep Reinforcement Learning for Plastic Waste Management
 
 This repository contains a Deep Reinforcement Learning (DRL) project aimed at optimizing the collection and conversion of plastic waste into cooking gas. Utilizing a customized environment and a model based on Deep Q-Networks (DQN), this project simulates the efficient management and processing of plastic waste within a defined grid-like environment.
