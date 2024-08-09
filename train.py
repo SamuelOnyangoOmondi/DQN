@@ -1,27 +1,19 @@
 import os
-# Set the environment variable to disable oneDNN optimizations before importing TensorFlow
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-
 import gym
 import numpy as np
 from stable_baselines3 import DQN
 from stable_baselines3.dqn.policies import MlpPolicy
 from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.evaluation import evaluate_policy
 from plastech_env import PlasTechEnv
 
 def make_env():
-    """Utility function for multiprocessed env."""
     env = PlasTechEnv()
     env = DummyVecEnv([lambda: env])
     return env
 
 def train_agent():
-    """Setup and train the DQN agent."""
-    # Create the environment
     env = make_env()
 
-    # Initialize the model
     model = DQN(
         MlpPolicy,
         env,
@@ -40,15 +32,12 @@ def train_agent():
         tensorboard_log="./plastech_dqn_tensorboard/"
     )
 
-    # Train the model
     model.learn(total_timesteps=int(1e5))
 
-    # Save the model
     model_path = os.path.join("models", "dqn_plastech")
     model.save(model_path)
     print(f"Model saved to {model_path}")
 
-    # Close the environment
     env.close()
 
 if __name__ == "__main__":
