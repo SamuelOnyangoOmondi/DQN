@@ -1,46 +1,38 @@
 import os
 import gym
+import numpy as np
 from stable_baselines3 import DQN
 from stable_baselines3.common.vec_env import DummyVecEnv
 from plastech_env import PlasTechEnv
 
 def make_env():
-    """Utility function for creating a multiprocessed environment."""
+    """Utility function for multiprocessed env."""
     env = PlasTechEnv()
-    env = DummyVecEnv([lambda: env])  # Use DummyVecEnv to wrap the environment
+    env = DummyVecEnv([lambda: env])
     return env
 
-def play_model():
-    """Load the model and simulate its performance."""
-    model_path = os.path.join("models", "dqn_plastech")
+def play_agent():
     env = make_env()
-
-    # Load the trained model
+    model_path = os.path.join("models", "dqn_plastech")
     model = DQN.load(model_path, env=env)
 
-    # Number of episodes to play
-    num_episodes = 10
-    max_steps_per_episode = 100  # Set a maximum number of steps per episode to avoid infinite loops
-
+    num_episodes = 10  # Set the desired number of episodes
     for episode in range(num_episodes):
         obs = env.reset()
-        done = False
         total_rewards = 0
-        step_count = 0  # Step counter to prevent infinite loops
-
-        while not done and step_count < max_steps_per_episode:
+        done = False
+        step = 0
+        while not done:
             action, _states = model.predict(obs, deterministic=True)
-            obs, rewards, done, info = env.step(action)
-            total_rewards += rewards
-            env.render()  # Comment this out if the environment does not support rendering
-            print(f"Action: {action}, Reward: {rewards}, Total Rewards: {total_rewards}")
-
-            step_count += 1
-            if done or step_count >= max_steps_per_episode:
-                print(f"Episode {episode + 1} completed in {step_count} steps. Total Rewards = {total_rewards}")
+            obs, reward, done, info = env.step(action)
+            total_rewards += reward[0]
+            print(f"Action: {action}, Reward: {reward}, Total Rewards: {total_rewards}")
+            step += 1
+            if step >= 100:  # Prevents infinite loop in case of missing done signal
                 break
+        print(f"Episode {episode + 1} completed in {step} steps. Total Rewards = {total_rewards}")
 
     env.close()
 
 if __name__ == "__main__":
-    play_model()
+    play_agent()
