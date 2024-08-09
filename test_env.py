@@ -2,29 +2,21 @@ import gym
 from plastech_env import PlasTechEnv
 
 def test_environment():
-    """
-    Function to test the PlasTech environment by initializing it, resetting it, and taking random actions
-    to see the responses and rewards.
-    """
+    """Create an instance of the environment and test its functionality."""
     env = PlasTechEnv()
-    env.reset()
-
+    state = env.reset()
     print("Testing environment initialization...")
-    initial_state = env.reset()
-    print("Initial state:")
-    env.render()
+    print("Initial state:", state)
 
-    # Perform random actions and print the outcome
     for _ in range(10):
-        action = env.action_space.sample()  # Randomly sample an action
-        next_state, reward, done, info = env.step(action)
-        print(f"Action taken: {action} -> Reward: {reward}, Done: {done}")
-        env.render()  # Visualize the state after the action
+        action = env.action_space.sample()
+        next_state, reward, done, _ = env.step(action)
+        print(f"Action: {action}, Next state: {next_state}, Reward: {reward}, Done: {done}")
         if done:
-            print("Resetting environment...")
-            env.reset()
+            state = env.reset()
+            print("Environment reset after done.")
+            print("State after reset:", state)
 
-    # Close the environment
     env.close()
     print("Environment closed successfully.")
 
