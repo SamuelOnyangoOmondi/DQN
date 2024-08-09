@@ -1,19 +1,14 @@
-import gym
-import numpy as np
+from plastech_env import PlasTechEnv
 from stable_baselines3 import DQN
 from stable_baselines3.dqn.policies import MlpPolicy
 from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.evaluation import evaluate_policy
-from plastech_env import PlasTechEnv
-import logging
 import os
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 def make_env():
-    env = PlasTechEnv()
-    env = DummyVecEnv([lambda: env])
-    return env
+    def _init():
+        env = PlasTechEnv()
+        return env
+    return DummyVecEnv([_init])
 
 def train_agent():
     env = make_env()
@@ -38,7 +33,7 @@ def train_agent():
     model_path = os.path.join("models", "dqn_plastech")
     model.save(model_path)
     env.close()
-    logging.info(f"Model saved to {model_path}")
+    print(f"Model saved to {model_path}")
 
 if __name__ == "__main__":
     train_agent()
