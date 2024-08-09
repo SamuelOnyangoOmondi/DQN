@@ -1,29 +1,19 @@
-import matplotlib.pyplot as plt
-from stable_baselines3 import DQN
 from plastech_env import PlasTechEnv
+from stable_baselines3 import DQN
 
 def play():
-    """
-    Loads the trained DQN model and runs it on the PlasTech environment to evaluate its performance.
-    This function also visualizes the state of the environment after each action taken by the agent.
-    """
+    """Load the model and run the environment interactively with the trained agent."""
     env = PlasTechEnv()
-    model = DQN.load("./models/dqn_plastech")
+    model = DQN.load("models/dqn_plastech")
 
     obs = env.reset()
-    plt.figure(figsize=(5, 5))
-
-    for i in range(100):
-        plt.clf()
+    for _ in range(200):
         action, _states = model.predict(obs, deterministic=True)
-        obs, rewards, dones, info = env.step(action)
-        plt.imshow(env.render(mode='rgb_array'))
-        plt.title(f"Step: {i + 1}, Action: {action}, Reward: {rewards}")
-        plt.pause(0.1)  # pause to update the plot
-        if dones:
+        obs, reward, done, info = env.step(action)
+        env.render()
+        if done:
             obs = env.reset()
 
-    plt.show()
     env.close()
 
 if __name__ == "__main__":
