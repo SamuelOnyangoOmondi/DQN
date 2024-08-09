@@ -1,5 +1,6 @@
 from stable_baselines3 import PPO
 import os
+import tensorflow as tf
 from plastech_env import PlasTechEnv
 
 def simulate_production():
