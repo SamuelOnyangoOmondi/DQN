@@ -1,38 +1,30 @@
-import os
-import gym
-import numpy as np
+import matplotlib.pyplot as plt
 from stable_baselines3 import DQN
-from stable_baselines3.common.vec_env import DummyVecEnv
 from plastech_env import PlasTechEnv
 
-def make_env():
-    """Utility function for multiprocessed env."""
+def play():
+    """
+    Loads the trained DQN model and runs it on the PlasTech environment to evaluate its performance.
+    This function also visualizes the state of the environment after each action taken by the agent.
+    """
     env = PlasTechEnv()
-    env = DummyVecEnv([lambda: env])
-    return env
+    model = DQN.load("./models/dqn_plastech")
 
-def play_agent():
-    env = make_env()
-    model_path = os.path.join("models", "dqn_plastech")
-    model = DQN.load(model_path, env=env)
+    obs = env.reset()
+    plt.figure(figsize=(5, 5))
 
-    num_episodes = 10  # Set the desired number of episodes
-    for episode in range(num_episodes):
-        obs = env.reset()
-        total_rewards = 0
-        done = False
-        step = 0
-        while not done:
-            action, _states = model.predict(obs, deterministic=True)
-            obs, reward, done, info = env.step(action)
-            total_rewards += reward[0]
-            print(f"Action: {action}, Reward: {reward}, Total Rewards: {total_rewards}")
-            step += 1
-            if step >= 100:  # Prevents infinite loop in case of missing done signal
-                break
-        print(f"Episode {episode + 1} completed in {step} steps. Total Rewards = {total_rewards}")
+    for i in range(100):
+        plt.clf()
+        action, _states = model.predict(obs, deterministic=True)
+        obs, rewards, dones, info = env.step(action)
+        plt.imshow(env.render(mode='rgb_array'))
+        plt.title(f"Step: {i + 1}, Action: {action}, Reward: {rewards}")
+        plt.pause(0.1)  # pause to update the plot
+        if dones:
+            obs = env.reset()
 
+    plt.show()
     env.close()
 
 if __name__ == "__main__":
-    play_agent()
+    play()
