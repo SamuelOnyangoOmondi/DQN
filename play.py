@@ -3,6 +3,8 @@ import os
 import tensorflow as tf
 from plastech_env import PlasTechEnv
 
+loss = tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+
 def simulate_production():
     model_path = "models/ppo_plastech"
 
