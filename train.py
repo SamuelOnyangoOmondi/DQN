@@ -1,10 +1,14 @@
-import os
 import gym
 import numpy as np
 from stable_baselines3 import DQN
 from stable_baselines3.dqn.policies import MlpPolicy
 from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
 from plastech_env import PlasTechEnv
+import logging
+import os
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def make_env():
     env = PlasTechEnv()
@@ -13,7 +17,6 @@ def make_env():
 
 def train_agent():
     env = make_env()
-
     model = DQN(
         MlpPolicy,
         env,
@@ -31,14 +34,11 @@ def train_agent():
         verbose=1,
         tensorboard_log="./plastech_dqn_tensorboard/"
     )
-
     model.learn(total_timesteps=int(1e5))
-
     model_path = os.path.join("models", "dqn_plastech")
     model.save(model_path)
-    print(f"Model saved to {model_path}")
-
     env.close()
+    logging.info(f"Model saved to {model_path}")
 
 if __name__ == "__main__":
     train_agent()
