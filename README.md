@@ -68,7 +68,7 @@ To install and run the DQN model, follow these steps:
 ## Video Submission
 
 A detailed walkthrough of the project setup, execution, and a demonstration of the trained agent is available in this video submission:
-[Watch the Video](https://example.com/plastech_video)
+[Watch the Video](https://drive.google.com/file/d/1fU01Zh1LOnp2QSXqHZnvlQQz7TzEeSiL/view?usp=sharing)
 
 ## Contributing
 
